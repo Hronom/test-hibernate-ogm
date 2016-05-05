@@ -8,12 +8,14 @@
         <!-- Use Hibernate OGM provider: configuration will be transparent -->
         <provider>org.hibernate.ogm.jpa.HibernateOgmPersistence</provider>
         <properties>
-            <!-- property is optional if you want to use Infinispan, otherwise adjust to your favorite
-                NoSQL Datastore provider. -->
-            <property name="hibernate.ogm.datastore.provider" value="infinispan"/>
-            <!-- defines which JTA Transaction we plan to use -->
-            <property name="hibernate.transaction.jta.platform"
-                      value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>
+            <!--&lt;!&ndash; property is optional if you want to use Infinispan, otherwise adjust to your favorite-->
+            <!--NoSQL Datastore provider. &ndash;&gt;-->
+            <!--<property name="hibernate.ogm.datastore.provider" value="infinispan"/>-->
+            <!--&lt;!&ndash; defines which JTA Transaction we plan to use &ndash;&gt;-->
+            <!--<property name="hibernate.transaction.jta.platform"-->
+            <!--value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>-->
+            <property name="hibernate.ogm.datastore.provider" value="neo4j_embedded"/>
+            <property name="hibernate.ogm.neo4j.database_path" value="./test"/>
         </properties>
     </persistence-unit>
 </persistence>

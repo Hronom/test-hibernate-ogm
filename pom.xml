@@ -16,46 +16,11 @@
     </properties>
 
     <dependencies>
+        <!-- Neo4j -->
         <dependency>
             <groupId>org.hibernate.ogm</groupId>
-            <artifactId>hibernate-ogm-bom</artifactId>
+            <artifactId>hibernate-ogm-neo4j</artifactId>
             <version>4.2.0.Final</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-
-        <!-- Infinispan -->
-        <dependency>
-            <groupId>org.hibernate.ogm</groupId>
-            <artifactId>hibernate-ogm-infinispan</artifactId>
-            <version>4.2.0.Final</version>
-        </dependency>
-
-        <!-- Hibernate OGM Infinispan module; pulls in the OGM core module -->
-        <dependency>
-            <groupId>org.hibernate.ogm</groupId>
-            <artifactId>hibernate-ogm-infinispan</artifactId>
-            <version>4.2.0.Final</version>
-        </dependency>
-
-        <!-- standard APIs dependencies - provided in a Java EE container -->
-        <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
-            <version>1.0.0.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.transaction</groupId>
-            <artifactId>jboss-transaction-api_1.2_spec</artifactId>
-            <version>1.0.1.Final</version>
-        </dependency>
-
-        <!-- JBoss Transactions dependency - this (or another implementation) is
-             provided in a Java EE container -->
-        <dependency>
-            <groupId>org.jboss.jbossts</groupId>
-            <artifactId>jbossjta</artifactId>
-            <version>4.16.6.Final</version>
         </dependency>
 
         <!-- Log4j -->
@@ -208,6 +173,11 @@
                     <encoding>UTF-8</encoding>
                     <argLine>-Xmx14g</argLine>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.2</version>
             </plugin>
         </plugins>
     </build>

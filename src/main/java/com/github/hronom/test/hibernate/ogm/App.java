@@ -2,28 +2,26 @@ package com.github.hronom.test.hibernate.ogm;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.transaction.jta.platform.spi.JtaPlatform;
+import org.hibernate.jpa.HibernateEntityManagerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.transaction.TransactionManager;
 
-/**
- * Hello world!
- */
 public class App {
-    private static final String JBOSS_TM_CLASS_NAME = "com.arjuna.ats.jta.TransactionManager";
-
     private static final Logger logger = LogManager.getLogger();
 
     public static void main(String[] args) throws Exception {
-        //accessing JBoss's Transaction can be done differently but this one works nicely
-        TransactionManager tm = getTransactionManager();
-
-        //build the EntityManagerFactory as you would build in in Hibernate ORM
+        // Build the EntityManagerFactory as you would build in in Hibernate ORM.
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ogm-jpa-tutorial");
 
-        //Persist entities the way you are used to in plain JPA
+        // Accessing JBoss's Transaction can be done differently but this one works nicely.
+        TransactionManager tm = extractJBossTransactionManager(emf);
+
+        // Persist entities the way you are used to in plain JPA.
         tm.begin();
         logger.info("About to store dog and breed");
         EntityManager em = emf.createEntityManager();
@@ -39,7 +37,7 @@ public class App {
         em.close();
         tm.commit();
 
-        //Retrieve your entities the way you are used to in plain JPA
+        // Retrieve your entities the way you are used to in plain JPA.
         tm.begin();
         logger.info("About to retrieve dog and breed");
         em = emf.createEntityManager();
@@ -52,8 +50,13 @@ public class App {
         emf.close();
     }
 
-    public static TransactionManager getTransactionManager() throws Exception {
-        Class<?> tmClass = App.class.getClassLoader().loadClass(JBOSS_TM_CLASS_NAME);
-        return (TransactionManager) tmClass.getMethod("transactionManager").invoke(null);
+    private static TransactionManager extractJBossTransactionManager(EntityManagerFactory factory) {
+        SessionFactoryImplementor sessionFactory =
+            (SessionFactoryImplementor) ((HibernateEntityManagerFactory) factory)
+                .getSessionFactory();
+        return sessionFactory
+            .getServiceRegistry()
+            .getService(JtaPlatform.class)
+            .retrieveTransactionManager();
     }
 }
